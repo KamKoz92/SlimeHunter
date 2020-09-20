@@ -4,6 +4,7 @@ import java.awt.Graphics;
 public class Bullet extends GameObject {
     private int bulletVel = 10;
     private Handler handler;
+    private int count;
     public Bullet(float x, float y, ID id, float angle, Handler handler) {
         super(x, y, id);
         this.x = x;
@@ -12,13 +13,15 @@ public class Bullet extends GameObject {
         this.handler = handler;
         velX = (float) ((bulletVel) * Math.cos(angle));
         velY = (float) ((bulletVel) * Math.sin(angle));
+        count = 0;
     }
 
     @Override
     public void tick() {
         x += velX;
         y += velY;
-        if(x > Game.WIDTH || x < 0 || y > Game.HEIGHT|| y < 0) {
+        count++;
+        if(count > 1500) {
             handler.removeObject(this);
         }
     }

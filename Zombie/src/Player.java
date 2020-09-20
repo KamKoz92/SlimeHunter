@@ -16,18 +16,28 @@ public class Player extends GameObject {
         x += velX;
         y += velY;
 
-        if(input.keys[0]) velX += _acc;
-        else if(input.keys[1]) velX -= _acc;
-        else if(!input.keys[0] && !input.keys[1]) {
-            if(velX > 0) velX -= _dcc;
-            else if(velX < 0) velX += _dcc;
+        if(input.verticalMov == 1) {
+            velY += _acc;
         }
-        if(input.keys[2]) velY += _acc;
-        else if(input.keys[3]) velY -= _acc;
-        else if(!input.keys[2] && !input.keys[3]) {
+        else if(input.verticalMov == 2) {
+            velY -= _acc;
+        }
+        else {
             if(velY > 0) velY -= _dcc;
             else if(velY < 0) velY += _dcc;
         }
+        if(input.horizontalMov == 2) {
+            velX += _acc;
+        }
+        else if(input.horizontalMov == 1) {
+            velX -= _acc;
+        }
+        else {
+            if(velX > 0) velX -= _dcc;
+            else if(velX < 0) velX += _dcc;
+        }
+
+
         velX = clamp(velX, 5, -5);
         velY = clamp(velY, 5, -5);
         
