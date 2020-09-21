@@ -7,11 +7,6 @@ public class Handler {
 
     public List<GameObject> objects = Collections.synchronizedList(new LinkedList<GameObject>());
 
-    // public Handler(float x, float y, ID id) {
-    //     super(x, y, id);
-        
-    // }
-
     public void tick() {
         for(int i = 0; i < objects.size(); i++) {
             objects.get(i).tick();

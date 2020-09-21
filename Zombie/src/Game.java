@@ -2,7 +2,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-// import java.awt.Graphics2D;
+
 
 public class Game extends Canvas implements Runnable {
 
@@ -17,7 +17,9 @@ public class Game extends Canvas implements Runnable {
     private KeyInput input;
     private MouseInput minput;
     private Camera camera;
-    private Map map;
+    private Level level;
+    private Enemy enemy;
+
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
         start();
@@ -28,7 +30,7 @@ public class Game extends Canvas implements Runnable {
         handler.addObject(new Box(200,50,ID.Block));
         handler.addObject(new Box(300,50,ID.Block));
 
-        map = new Map("map.txt");
+        enemy.tick();
         camera.findPlayer();
         minput.findPlayer();
     }
@@ -38,6 +40,8 @@ public class Game extends Canvas implements Runnable {
         input = new KeyInput();
         camera = new Camera(0, 0, handler);
         minput = new MouseInput(handler, camera);
+        level = new Level("res/map.txt");
+        enemy = new Enemy();
         this.addKeyListener(input);
         this.addMouseListener(minput);
 
@@ -89,6 +93,7 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         handler.tick();
         camera.tick();
+        enemy.tick();
     }
 
     private void render() {
@@ -102,6 +107,7 @@ public class Game extends Canvas implements Runnable {
 
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, WIDTH, HEIGHT);
+        //map.render(g);
 
         //g2d.translate(-camera.getX(), -camera.getY());
 
