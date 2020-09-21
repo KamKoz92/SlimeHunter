@@ -51,7 +51,7 @@ public class KeyInput extends KeyAdapter {
                 horizontalMov = 2;
             }
             else {
-                horizontalMov = 1;
+                horizontalMov = 0;
             }
         } 
         else if(key == KeyEvent.VK_S) {

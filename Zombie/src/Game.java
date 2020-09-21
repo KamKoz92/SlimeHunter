@@ -2,13 +2,13 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.Graphics2D;
+// import java.awt.Graphics2D;
 
 public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 1L;
     public static int WIDTH = 640, HEIGHT = 480;
-    public String title = "Zombie Game";
+    public String title = "Game";
 
     private Thread thread;
     private boolean isRunning = false;
@@ -17,7 +17,7 @@ public class Game extends Canvas implements Runnable {
     private KeyInput input;
     private MouseInput minput;
     private Camera camera;
-
+    private Map map;
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
         start();
@@ -28,6 +28,7 @@ public class Game extends Canvas implements Runnable {
         handler.addObject(new Box(200,50,ID.Block));
         handler.addObject(new Box(300,50,ID.Block));
 
+        map = new Map("map.txt");
         camera.findPlayer();
         minput.findPlayer();
     }
