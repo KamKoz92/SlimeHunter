@@ -5,8 +5,8 @@ public class Bullet extends GameObject {
     private int bulletVel = 10;
     private Handler handler;
     private int count;
-    public Bullet(float x, float y, ID id, float angle, Handler handler) {
-        super(x, y, id);
+    public Bullet(float x, float y, ID id, float angle, Handler handler, Level level) {
+        super(x, y, id, level);
         this.x = x;
         this.y = y;
         this.id = id;

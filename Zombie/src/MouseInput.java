@@ -5,9 +5,11 @@ public class MouseInput extends MouseAdapter{
     private Handler handler;
     private GameObject tGameObject = null;
     private Camera camera;
-    public MouseInput(Handler handler, Camera camera) {
+    private Level level;
+    public MouseInput(Handler handler, Camera camera, Level level) {
         this.camera = camera;
         this.handler = handler;
+        this.level = level;
     }
 
     public void findPlayer() {
@@ -24,7 +26,7 @@ public class MouseInput extends MouseAdapter{
         int my = e.getY();
         float angle = (float) Math.atan2(my - tGameObject.y-16+camera.getY(), mx - tGameObject.x-16 + camera.getX());
     
-        handler.addObject(new Bullet(tGameObject.x+16, tGameObject.y+16,ID.Bullet, angle, handler));
+        handler.addObject(new Bullet(tGameObject.x+16, tGameObject.y+16,ID.Bullet, angle, handler, level));
     }
     
     

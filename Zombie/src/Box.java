@@ -3,8 +3,8 @@ import java.awt.Graphics;
 
 public class Box extends GameObject {
 
-    public Box(float x, float y, ID id) {
-        super(x, y, id);
+    public Box(float x, float y, ID id, Level level) {
+        super(x, y, id, level);
         
     }
 

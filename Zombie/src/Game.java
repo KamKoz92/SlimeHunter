@@ -7,7 +7,7 @@ import java.awt.image.BufferStrategy;
 public class Game extends Canvas implements Runnable {
 
     private static final long serialVersionUID = 1L;
-    public static int WIDTH = 640, HEIGHT = 480;
+    public static int WIDTH = 640, HEIGHT = WIDTH / 12*9;
     public String title = "Game";
 
     private Thread thread;
@@ -18,32 +18,27 @@ public class Game extends Canvas implements Runnable {
     private MouseInput minput;
     private Camera camera;
     private Level level;
-    private Enemy enemy;
+
 
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
         start();
-        init();
-        handler.addObject(new Player(100,100,ID.Player,input));
-
-        handler.addObject(new Box(100,50,ID.Block));
-        handler.addObject(new Box(200,50,ID.Block));
-        handler.addObject(new Box(300,50,ID.Block));
-
-        enemy.tick();
-        camera.findPlayer();
-        minput.findPlayer();
+        
     }
 
     private void init() {
+        
         handler = new Handler();
         input = new KeyInput();
-        camera = new Camera(0, 0, handler);
-        minput = new MouseInput(handler, camera);
-        level = new Level("res/map.txt");
-        enemy = new Enemy();
+        camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
+        level = new Level("../res/map.txt", camera);
+        handler.addObject(new Player(WIDTH/2,HEIGHT/2,ID.Player,input,camera,level));
+        minput = new MouseInput(handler, camera, level);
+        
+
         this.addKeyListener(input);
         this.addMouseListener(minput);
+        minput.findPlayer();
 
     }
 
@@ -72,19 +67,26 @@ public class Game extends Canvas implements Runnable {
         double amountOfTicks = 60.0;
         double ns = 1000000000 / amountOfTicks;
         double delta = 0;
+        int ticks = 0, frames = 0; 
         long timer = System.currentTimeMillis();
+        init();
+        //level.tick();
         while (isRunning) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
             while (delta >= 1) {
+                ticks++;
                 tick();
                 delta--;
             }
             render();
-
+            frames++;
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
+                System.out.println("Frames: " + frames + ", Ticks: " + ticks);
+                frames = 0;
+                ticks = 0;
             }
         }
         stop();
@@ -93,7 +95,6 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         handler.tick();
         camera.tick();
-        enemy.tick();
     }
 
     private void render() {
@@ -107,7 +108,7 @@ public class Game extends Canvas implements Runnable {
 
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        //map.render(g);
+        level.render(g);
 
         //g2d.translate(-camera.getX(), -camera.getY());
 

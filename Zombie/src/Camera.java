@@ -1,28 +1,24 @@
 public class Camera {
-    private int x, y;
-    private Handler handler;
-    private GameObject tGameObject;
+    
+    private int x, y, w, h;
 
-    public Camera(int x, int y, Handler hanler) {
+    private Handler handler;
+    public Camera(int x, int y, int w, int h, Handler handler) {
         this.x = x;
         this.y = y;
-        this.handler = hanler;
-    }
-
-    public void findPlayer() {
-        for(int i = 0; i < handler.objects.size(); i++) {
-            if(handler.objects.get(i).getId() == ID.Player) {
-                tGameObject = handler.objects.get(i);
-                return;
-            }
-        }
+        this.w = w;
+        this.h = h;
+        this.handler = handler;
     }
 
     public void tick() {
-        if(tGameObject != null) {
-            x = (int) tGameObject.x - Game.WIDTH/2;
-            y = (int) tGameObject.y - Game.HEIGHT/2;
-        } else findPlayer();
+        x = (int)handler.objects.get(0).x - Game.WIDTH/2;
+        y = (int)handler.objects.get(0).y - Game.HEIGHT/2;
+        if(x < 0) x = 0;
+        if(y < 0) y = 0;
+        if(x > (32 * 32) - w) x = (32 * 32) - w;
+        if(y > (32 * 32) - h) y = (32 * 32) - h;
+
     }
 
     public int getX() {
@@ -39,5 +35,21 @@ public class Camera {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getW() {
+        return w;
+    }
+
+    public void setW(int w) {
+        this.w = w;
+    }
+
+    public int getH() {
+        return h;
+    }
+
+    public void setH(int h) {
+        this.h = h;
     }
 }
