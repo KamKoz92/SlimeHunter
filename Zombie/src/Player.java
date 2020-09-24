@@ -6,13 +6,13 @@ public class Player extends GameObject {
     private KeyInput input;
     private int attackTime;
     private Camera camera;
-    private int playerSize;
-    public Player(int x, int y, ID id, KeyInput input, Camera camera, Level level) {
-        super(x, y, id, level);
+
+    public Player(int x, int y, KeyInput input, Camera camera, Level level, Handler handler, boolean solid) {
+        super(x, y, level, handler, solid);
         this.input = input;
         this.attackTime  = 0;
         this.camera = camera;
-        this.playerSize = 32;
+        this.objectSize = 32;
     }
 
     @Override
@@ -58,35 +58,9 @@ public class Player extends GameObject {
             attackTime--;
         }
         g.setColor(Color.white);
-        g.fillRect((int)x - camera.getX(), (int)y - camera.getY(), 32, 32);
+        g.fillRect((int)x - camera.getX(), (int)y - camera.getY(), objectSize, objectSize);
     }
     
-
-    private void move(int velX, int velY) {
-        if (velX != 0 && velY != 0) {
-            move(velX, 0);
-            move(0, velY);
-            return;
-        }
-
-        if (!hasCollided(velX, velY)) {
-            x += velX;
-            y += velY;
-        }
-    }
-
-    private boolean hasCollided(int velX, int velY) {
-        int xMin = this.x + velX;
-        int xMax = this.x + playerSize + velX;
-        int yMin = this.y + velY;
-        int yMax = this.y + playerSize + velY;
-
-        if(level.getTile(xMin, yMin).isSolid() || level.getTile(xMin, yMax).isSolid() || level.getTile(xMax, yMin).isSolid() || level.getTile(xMax, yMax).isSolid()) {
-            return true;
-        }
-
-        return false;
-    }
 }
 
 

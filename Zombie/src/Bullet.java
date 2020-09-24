@@ -5,12 +5,10 @@ public class Bullet extends GameObject {
     private int bulletVel = 10;
     private Handler handler;
     private int count;
-    public Bullet(int x, int y, ID id, int angle, Handler handler, Level level) {
-        super(x, y, id, level);
+    public Bullet(int x, int y, int angle, Handler handler, Level level, boolean solid) {
+        super(x, y, level, handler, solid);
         this.x = x;
         this.y = y;
-        this.id = id;
-        this.handler = handler;
         velX = (int) ((bulletVel) * Math.cos(angle));
         velY = (int) ((bulletVel) * Math.sin(angle));
         count = 0;
@@ -29,7 +27,7 @@ public class Bullet extends GameObject {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect((int)x, (int)y, 8, 8);
+        g.fillRect(x, y, 8, 8);
 
     }
 

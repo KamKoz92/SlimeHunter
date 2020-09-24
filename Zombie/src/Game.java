@@ -31,14 +31,13 @@ public class Game extends Canvas implements Runnable {
         handler = new Handler();
         input = new KeyInput();
         camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
-        level = new Level("../res/map.txt", camera);
-        handler.addObject(new Player(WIDTH/2,HEIGHT/2,ID.Player,input,camera,level));
+        level = new Level("res/map.txt", camera);
+        handler.addObject(new Player(WIDTH/2, HEIGHT/2,input, camera, level, handler, true));
         minput = new MouseInput(handler, camera, level);
         
-
+        handler.addObject(new Enemy(WIDTH/2 + 50, HEIGHT/2 + 50, camera, level, handler, true));
         this.addKeyListener(input);
         this.addMouseListener(minput);
-        minput.findPlayer();
 
     }
 
