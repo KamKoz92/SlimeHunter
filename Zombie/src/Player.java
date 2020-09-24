@@ -7,7 +7,7 @@ public class Player extends GameObject {
     private int attackTime;
     private Camera camera;
     private int playerSize;
-    public Player(float x, float y, ID id, KeyInput input, Camera camera, Level level) {
+    public Player(int x, int y, ID id, KeyInput input, Camera camera, Level level) {
         super(x, y, id, level);
         this.input = input;
         this.attackTime  = 0;
@@ -17,33 +17,30 @@ public class Player extends GameObject {
 
     @Override
     public void tick() {
-        
-       
-
         if(input.verticalMov == 1) {
-            velY = 4;
+            velY = 3;
         }
         else if(input.verticalMov == 2) {
-            velY = -4;
+            velY = -3;
         }
         else {
             velY = 0;
         }
 
         if(input.horizontalMov == 2) {
-            velX = 4;
+            velX = 3;
         }
         else if(input.horizontalMov == 1) {
-            velX = -4;
+            velX = -3;
         }
         else {
             velX = 0;
         }
+        
         if (velX != 0 || velY != 0) {
-            move((int)velX, (int)velY);
+            move(velX, velY);
         }
         
-
         if(input.space == 1) {
             attackTime = 1000;
             input.space = 0;
@@ -53,6 +50,8 @@ public class Player extends GameObject {
     
     @Override
     public void render(Graphics g) {
+        //player texture canvas of 64x64
+
         if(attackTime > 0) {
             g.setColor(Color.cyan);
             g.fillRect((int) x + 32 - camera.getX(), (int) y + 8 - camera.getY(), 16, 16);
@@ -69,28 +68,20 @@ public class Player extends GameObject {
             move(0, velY);
             return;
         }
+
         if (!hasCollided(velX, velY)) {
-                x += velX;
-                y += velY;
+            x += velX;
+            y += velY;
         }
     }
 
     private boolean hasCollided(int velX, int velY) {
-        if(velX > 0) {
-            if(!level.getTile((int)x, (int)y).equals(level.getTile(playerSize + (int)x, (int)y)) && level.getTile(playerSize + (int)x, (int)y).isSolid()) {
-                return true;
-            }
-        }
-        else if(velX < 0) {
+        int xMin = this.x + velX;
+        int xMax = this.x + playerSize + velX;
+        int yMin = this.y + velY;
+        int yMax = this.y + playerSize + velY;
 
-        }
-        else if(velY > 0) {
-
-        }
-        else if(velY < 0) {
-
-        }
-        if(!level.getTile(velX, velY).equals(level.getTile(velX,velY)) && level.getTile(velX, velY).isSolid()) {
+        if(level.getTile(xMin, yMin).isSolid() || level.getTile(xMin, yMax).isSolid() || level.getTile(xMax, yMin).isSolid() || level.getTile(xMax, yMax).isSolid()) {
             return true;
         }
 

@@ -1,11 +1,11 @@
 import java.awt.Graphics;
 
 public abstract class GameObject {
-    protected float x, y;
-    protected float velX, velY;
+    protected int x, y;
+    protected int velX, velY;
     protected ID id;
     protected Level level;
-    public GameObject(float x, float y, ID id, Level level) {
+    public GameObject(int x, int y, ID id, Level level) {
         this.x = x;
         this.y = y;
         this.id = id;
@@ -15,35 +15,35 @@ public abstract class GameObject {
     public abstract void tick();
     public abstract void render(Graphics g);
 
-    public float getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public float getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    public float getVelX() {
+    public int getVelX() {
         return velX;
     }
 
-    public void setVelX(float velX) {
+    public void setVelX(int velX) {
         this.velX = velX;
     }
 
-    public float getVelY() {
+    public int getVelY() {
         return velY;
     }
 
-    public void setVelY(float velY) {
+    public void setVelY(int velY) {
         this.velY = velY;
     }
 

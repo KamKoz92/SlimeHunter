@@ -70,7 +70,7 @@ public class Game extends Canvas implements Runnable {
         int ticks = 0, frames = 0; 
         long timer = System.currentTimeMillis();
         init();
-        //level.tick();
+
         while (isRunning) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;

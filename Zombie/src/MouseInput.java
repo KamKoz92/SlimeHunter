@@ -24,7 +24,7 @@ public class MouseInput extends MouseAdapter{
     public void mousePressed(MouseEvent e) {
         int mx = e.getX();
         int my = e.getY();
-        float angle = (float) Math.atan2(my - tGameObject.y-16+camera.getY(), mx - tGameObject.x-16 + camera.getX());
+        int angle = (int) Math.atan2(my - tGameObject.y-16+camera.getY(), mx - tGameObject.x-16 + camera.getX());
     
         handler.addObject(new Bullet(tGameObject.x+16, tGameObject.y+16,ID.Bullet, angle, handler, level));
     }

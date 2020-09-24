@@ -7,7 +7,6 @@ import java.awt.Color;
 
 public class Level {
     private String[] str;
-    //private List<Integer> intmap = new ArrayList<Integer>();
     private Camera camera;
     private List<Tile> tileMap = new ArrayList<Tile>();
     private int tileSize;
@@ -23,7 +22,6 @@ public class Level {
                 str = sc.nextLine().split(",");
                 for(int x = 0; x < str.length; x++) {
                     tileMap.add(new Tile(x * tileSize, y * tileSize, Integer.parseInt(str[x])));
-                    //intmap.add(Integer.parseInt(str[x]));
                 }
                 y++;
             }
@@ -36,12 +34,9 @@ public class Level {
         } 
     }
     public void tick() {
-        for(int i = 0; i < tileMap.size(); i++) {
-            if(tileMap.get(i).getX() == 0)
-                System.out.println();
-            System.out.print("(" + tileMap.get(i).getX()+", " + tileMap.get(i).getY() + ")");
-        }
+
     }
+
     public void render(Graphics g) {
         for(int i = 0; i < tileMap.size(); i++) {
              if(!outOfCamera(tileMap.get(i))) {
@@ -64,12 +59,12 @@ public class Level {
     }
 
     public Tile getTile(int x, int y) {
-        x = x % tileSize;
-        y = y / tileSize; 
+        x = x / tileSize;
+        y = (y / tileSize) * (width / tileSize); 
         if(x < 0 || x >= width || y < 0 || y >= height) {
             return null;
         }    
-        return tileMap.get(x+y*32);
+        return tileMap.get(x + y);
     }
 }
 
