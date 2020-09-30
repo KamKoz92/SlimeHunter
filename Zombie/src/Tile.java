@@ -1,16 +1,20 @@
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class Tile {
 
     private int x, y, type;
+    public int sX, sY;
     private boolean solid;
-    public Tile(int x, int y, int type) {
+    public BufferedImage image;
+    public Tile(int x, int y, int type, SpriteSheet sheet) {
         this.x = x;
         this.y = y;
         this.type = type;
-        if(type < 1) {
-            solid = true;
-        }
+        this.solid = Tileset.solid(type);
+        this.sX = (type % 8) * 32;
+        this.sY = (type / 8) * 32;
+        this.image = sheet.image.getSubimage(sX, sY, 32, 32);
     }
     public void tick() {
 

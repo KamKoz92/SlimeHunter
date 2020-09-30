@@ -25,20 +25,60 @@ public abstract class GameObject {
             return;
         }
 
-        if (!hasCollided(velX, velY)) {
-            x += velX;
-            y += velY;
+        if(velX > 0) {
+            if(!hasCollided(velX, 0)) {
+                x += velX;
+            }
+            else if(!hasCollided(velX-1, 0)){
+                x += velX-1;
+            }
+            else if(!hasCollided(velX-2, 0)) {
+                x += velX-2;
+            }
+        }
+        else {
+            if(!hasCollided(velX, 0)) {
+                x += velX;
+            }
+            else if(!hasCollided(velX+1, 0)){
+                x += velX+1;
+            }
+            else if(!hasCollided(velX+2, 0)) {
+                x += velX+2;
+            }
+        }
+
+        if(velY > 0) {
+            if(!hasCollided(0, velY)) {
+                y += velY;
+            }
+            else if(!hasCollided(0, velY-1)){
+                y += velY-1;
+            }
+            else if(!hasCollided(0, velY-2)) {
+                y += velY-2;
+            }
+        }
+        else {
+            if(!hasCollided(0, velY)) {
+                y += velY;
+            }
+            else if(!hasCollided(0, velY+1)){
+                y += velY+1;
+            }
+            else if(!hasCollided(0, velY+2)) {
+                y += velY+2;
+            }
         }
     }
-
     public boolean hasCollided(int velX, int velY) {
         int xMin = this.x + velX;
-        int xMax = this.x + objectSize + velX;
+        int xMax = this.x + objectSize + velX - 1;
         int yMin = this.y + velY;
-        int yMax = this.y + objectSize + velY;
+        int yMax = this.y + objectSize + velY - 1;
 
         if(level.getTile(xMin, yMin).isSolid() || level.getTile(xMin, yMax).isSolid() || level.getTile(xMax, yMin).isSolid() || level.getTile(xMax, yMax).isSolid()) {
-            System.out.println("hit");
+            // System.out.println("hit");
             return true;
         }
 
@@ -53,7 +93,7 @@ public abstract class GameObject {
                 tempO.inCollisionBox(xMin, yMax) ||
                 tempO.inCollisionBox(xMax, yMin) ||
                 tempO.inCollisionBox(xMax, yMax)) {
-                    System.out.println("hit");
+                    // System.out.println("hit");
                     return true;
                 }
             } 

@@ -18,7 +18,7 @@ public class Game extends Canvas implements Runnable {
     private MouseInput minput;
     private Camera camera;
     private Level level;
-
+    private SpriteSheet sheet;
 
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
@@ -31,8 +31,9 @@ public class Game extends Canvas implements Runnable {
         handler = new Handler();
         input = new KeyInput();
         camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
-        level = new Level("res/map.txt", camera);
-        handler.addObject(new Player(WIDTH/2, HEIGHT/2,input, camera, level, handler, true));
+        sheet = new SpriteSheet("res/newmap2.png");
+        level = new Level("res/map.txt", sheet, camera);
+        handler.addObject(new Player(WIDTH/2, HEIGHT/2 + 32,input, camera, level, handler, true, "res/player.png"));
         minput = new MouseInput(handler, camera, level);
         
         handler.addObject(new Enemy(WIDTH/2 + 50, HEIGHT/2 + 50, camera, level, handler, true));

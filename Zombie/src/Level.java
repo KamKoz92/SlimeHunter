@@ -1,9 +1,14 @@
 import java.awt.Graphics;
+// import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+
 import java.awt.Color;
+
+
 
 public class Level {
     private String[] str;
@@ -11,9 +16,11 @@ public class Level {
     private List<Tile> tileMap = new ArrayList<Tile>();
     private int tileSize;
     private int width, height;
-    public Level(String path, Camera camera) {
+    // private SpriteSheet sheet;
+    public Level(String path, SpriteSheet sheet, Camera camera) {
         this.camera = camera;
         this.tileSize = 32;
+        // this.sheet = sheet;
         try {
             File file = new File(path);
             Scanner sc = new Scanner(file); 
@@ -21,7 +28,7 @@ public class Level {
             while(sc.hasNextLine()) {
                 str = sc.nextLine().split(",");
                 for(int x = 0; x < str.length; x++) {
-                    tileMap.add(new Tile(x * tileSize, y * tileSize, Integer.parseInt(str[x])));
+                    tileMap.add(new Tile(x * tileSize, y * tileSize, Integer.parseInt(str[x]), sheet));
                 }
                 y++;
             }
@@ -38,8 +45,15 @@ public class Level {
     }
 
     public void render(Graphics g) {
+        Tile tempTile;
         for(int i = 0; i < tileMap.size(); i++) {
-             if(!outOfCamera(tileMap.get(i))) {
+            tempTile = tileMap.get(i);
+            if(!outOfCamera(tempTile)) {
+                
+                // g.drawImage(tempTile.image, tempTile.getX() - camera.getX(), tempTile.getY() - camera.getY(), null);
+
+
+
                 if(tileMap.get(i).getType() == 1) {
                     g.setColor(Color.green);
                 }
@@ -47,7 +61,7 @@ public class Level {
                     g.setColor(Color.blue);
                 }
                 g.fillRect((tileMap.get(i).getX()) - camera.getX(), (tileMap.get(i).getY()) - camera.getY(), tileSize, tileSize);
-             }
+            }
         }
     }
 
