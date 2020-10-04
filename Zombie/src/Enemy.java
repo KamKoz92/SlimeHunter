@@ -28,7 +28,8 @@ public class Enemy extends GameObject {
 
     public void tick() {
         checkDst();
-        if(dstX < 0 || dstY < 0) {  
+
+        if(dstX < 0 || dstY < 0) {  ///////////////
             if(timeCheck) {
                 lastMoveTime = System.currentTimeMillis();
                 System.out.println("new time");
@@ -55,7 +56,7 @@ public class Enemy extends GameObject {
         velY = (int) (((-1.0/distance) * diffY) * 2);
         velX = clamp(velX,-2,2);
         velY = clamp(velY,-2,2);
-        System.out.println("new dst");
+        // System.out.println("new dst");
     }
 
     private int clamp(int vel, int i, int j) {

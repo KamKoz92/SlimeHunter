@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-import java.awt.Color;
+// import java.awt.Color;
 
 
 
@@ -16,11 +16,10 @@ public class Level {
     private List<Tile> tileMap = new ArrayList<Tile>();
     private int tileSize;
     private int width, height;
-    // private SpriteSheet sheet;
+    
     public Level(String path, SpriteSheet sheet, Camera camera) {
         this.camera = camera;
         this.tileSize = 32;
-        // this.sheet = sheet;
         try {
             File file = new File(path);
             Scanner sc = new Scanner(file); 
@@ -35,6 +34,9 @@ public class Level {
             sc.close();
             this.width = str.length * tileSize;
             this.height = y * tileSize;
+            this.camera.mapHeight = y + 1;
+            this.camera.mapWidth = str.length;
+            this.camera.tileSize = tileSize;
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -49,18 +51,7 @@ public class Level {
         for(int i = 0; i < tileMap.size(); i++) {
             tempTile = tileMap.get(i);
             if(!outOfCamera(tempTile)) {
-                
-                // g.drawImage(tempTile.image, tempTile.getX() - camera.getX(), tempTile.getY() - camera.getY(), null);
-
-
-
-                if(tileMap.get(i).getType() == 1) {
-                    g.setColor(Color.green);
-                }
-                else {
-                    g.setColor(Color.blue);
-                }
-                g.fillRect((tileMap.get(i).getX()) - camera.getX(), (tileMap.get(i).getY()) - camera.getY(), tileSize, tileSize);
+                g.drawImage(tempTile.image, tempTile.getX() - camera.getX(), tempTile.getY() - camera.getY(), null);
             }
         }
     }
@@ -73,12 +64,16 @@ public class Level {
     }
 
     public Tile getTile(int x, int y) {
-        x = x / tileSize;
-        y = (y / tileSize) * (width / tileSize); 
+        
         if(x < 0 || x >= width || y < 0 || y >= height) {
-            return null;
+            System.out.println("null pointer returned" + x + ' ' + y + " " + width + " " + height);
+            return null;  
         }    
-        return tileMap.get(x + y);
+        else {
+            x = x / tileSize;
+            y = (y / tileSize) * (width / tileSize); 
+            return tileMap.get(x + y);
+        }
     }
 }
 

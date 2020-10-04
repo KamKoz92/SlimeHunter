@@ -31,12 +31,12 @@ public class Game extends Canvas implements Runnable {
         handler = new Handler();
         input = new KeyInput();
         camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
-        sheet = new SpriteSheet("res/newmap2.png");
-        level = new Level("res/map.txt", sheet, camera);
-        handler.addObject(new Player(WIDTH/2, HEIGHT/2 + 32,input, camera, level, handler, true, "res/player.png"));
+        sheet = new SpriteSheet("res/level1tileset.png");
+        level = new Level("res/level1.txt", sheet, camera);
+        handler.addObject(new Player(64, 64,input, camera, level, handler, true, "res/player.png"));
         minput = new MouseInput(handler, camera, level);
         
-        handler.addObject(new Enemy(WIDTH/2 + 50, HEIGHT/2 + 50, camera, level, handler, true));
+       //handler.addObject(new Enemy(WIDTH/2 + 50, HEIGHT/2 + 50, camera, level, handler, true));
         this.addKeyListener(input);
         this.addMouseListener(minput);
 
@@ -104,17 +104,14 @@ public class Game extends Canvas implements Runnable {
             return;
         }
         Graphics g = bs.getDrawGraphics();
-        //Graphics2D g2d = (Graphics2D) g;
 
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         level.render(g);
 
-        //g2d.translate(-camera.getX(), -camera.getY());
 
         handler.render(g);
 
-        //g2d.translate(camera.getX(), camera.getY());
 
         bs.show();
         g.dispose();

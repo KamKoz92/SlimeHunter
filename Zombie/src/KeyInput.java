@@ -6,11 +6,9 @@ public class KeyInput extends KeyAdapter {
     private boolean keys[] = new boolean[4];
     private int key;
     
-    //vertical priority 1-down 2-up 
     public int verticalMov = 0;
-    //horizontal priority 1-left 2-right
     public int horizontalMov = 0;
-    public int space = 0;
+    public boolean space = false;
     public void keyPressed(KeyEvent e) {
         key = e.getKeyCode();
         if(key == KeyEvent.VK_D) {
@@ -30,7 +28,7 @@ public class KeyInput extends KeyAdapter {
             verticalMov = 2;
         }
         else if(key == KeyEvent.VK_SPACE) {
-            space = 1;
+            space = true;
         }
         
     }
@@ -71,6 +69,9 @@ public class KeyInput extends KeyAdapter {
             else {
                 verticalMov = 0;
             }
+        }
+        else if(key == KeyEvent.VK_SPACE) {
+            space = false;
         }
 
     }

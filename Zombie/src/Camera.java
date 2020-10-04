@@ -3,21 +3,25 @@ public class Camera {
     private int x, y, w, h;
 
     private Handler handler;
+    public int mapWidth, mapHeight, tileSize;
     public Camera(int x, int y, int w, int h, Handler handler) {
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.handler = handler;
+        this.mapWidth = 32;//
+        this.mapHeight = 32;//
+        this.tileSize = 32;//
     }
 
     public void tick() {
-        x = (int)handler.objects.get(0).x - Game.WIDTH/2;
-        y = (int)handler.objects.get(0).y - Game.HEIGHT/2;
+        x = handler.objects.get(0).x - Game.WIDTH/2;
+        y = handler.objects.get(0).y - Game.HEIGHT/2;
         if(x < 0) x = 0;
         if(y < 0) y = 0;
-        if(x > (32 * 32) - w) x = (32 * 32) - w;
-        if(y > (32 * 32) - h) y = (32 * 32) - h;
+        if(x > (mapWidth * tileSize) - w) x = (mapWidth * tileSize) - w;
+        if(y > (mapHeight * tileSize) - h) y = (mapHeight * tileSize) - h;
 
     }
 
