@@ -19,7 +19,7 @@ public class Game extends Canvas implements Runnable {
     private Camera camera;
     private Level level;
     private SpriteSheet sheet;
-
+    private HUD hud;
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
         start();
@@ -31,12 +31,13 @@ public class Game extends Canvas implements Runnable {
         handler = new Handler();
         input = new KeyInput();
         camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
+        hud = new HUD(handler);
         sheet = new SpriteSheet("res/level1tileset.png");
         level = new Level("res/level1.txt", sheet, camera);
-        handler.addObject(new Player(64, 64,input, camera, level, handler, true, "res/player.png"));
+        handler.newPlayer(new Player(64, 64,input, camera, level, handler, true, "res/player2.png"));
         minput = new MouseInput(handler, camera, level);
         
-       //handler.addObject(new Enemy(WIDTH/2 + 50, HEIGHT/2 + 50, camera, level, handler, true));
+        handler.addObject(new Enemy(64 + 100, 64 + 150, camera, level, handler, true));
         this.addKeyListener(input);
         this.addMouseListener(minput);
 
@@ -105,13 +106,10 @@ public class Game extends Canvas implements Runnable {
         }
         Graphics g = bs.getDrawGraphics();
 
-        g.setColor(Color.GRAY);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
+
         level.render(g);
-
-
         handler.render(g);
-
+        hud.render(g);
 
         bs.show();
         g.dispose();

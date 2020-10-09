@@ -14,35 +14,45 @@ public class Enemy extends GameObject {
     private int moveDelay;
     private long lastMoveTime;
     private boolean timeCheck;
+    private boolean dead;
     public Enemy(int x, int y, Camera camera, Level level, Handler handler, boolean solid)  {
-       super(x, y, level, handler, solid);
-       this.camera = camera;
-       this.objectSize = 32;
-       this.spawnX = x;
-       this.spawnY = y;
-       this.r = new Random();
-       this.moveDelay = 1000;
-       this.timeCheck = true;
-       newDst();
+       super(x, y, level, handler, solid, 100);
+        this.camera = camera;
+        objectSize = 16;
+        dead = false;
+       
+       
+       
+    //    this.spawnX = x;
+    //    this.spawnY = y;
+    //    this.r = new Random();
+    //    this.moveDelay = 1000;
+    //    this.timeCheck = true;
+    //    newDst();
     }
 
     public void tick() {
-        checkDst();
+        if(currentHealth <= 0) {
+            dead = true;
+            x = -100;
+            y = -100;
+        }
+        // checkDst();
 
-        if(dstX < 0 || dstY < 0) {  ///////////////
-            if(timeCheck) {
-                lastMoveTime = System.currentTimeMillis();
-                System.out.println("new time");
-                timeCheck = false;
-            }
-            if(System.currentTimeMillis() - lastMoveTime > moveDelay) {
-                newDst();
-                timeCheck = true;
-            }
-        }
-        else {
-            move(velX, velY);
-        }
+        // if(dstX < 0 || dstY < 0) { 
+        //     if(timeCheck) {
+        //         lastMoveTime = System.currentTimeMillis();
+        //         System.out.println("new time");
+        //         timeCheck = false;
+        //     }
+        //     if(System.currentTimeMillis() - lastMoveTime > moveDelay) {
+        //         newDst();
+        //         timeCheck = true;
+        //     }
+        // }
+        // else {
+        //     move(velX, velY);
+        // }
     }
     
 
@@ -56,7 +66,7 @@ public class Enemy extends GameObject {
         velY = (int) (((-1.0/distance) * diffY) * 2);
         velX = clamp(velX,-2,2);
         velY = clamp(velY,-2,2);
-        // System.out.println("new dst");
+
     }
 
     private int clamp(int vel, int i, int j) {
@@ -67,13 +77,18 @@ public class Enemy extends GameObject {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.red);
-        g.fillRect(x - camera.getX(), y - camera.getY(), objectSize, objectSize);
+        if(!dead) {
+            g.setColor(Color.red);
+            g.fillRect(x - camera.getX(), y - camera.getY(), objectSize, objectSize);
+
+            g.setColor(Color.red);
+            g.fillRect(this.x - camera.getX(), this.y - 6 - camera.getY(), 14, 3);
+            g.setColor(Color.green);
+            g.fillRect(this.x - camera.getX(), this.y - 6 - camera.getY(), (int)((currentHealth/maxHealth) * 14), 3);
+            g.setColor(Color.white);
+            g.drawRect(this.x - camera.getX(), this.y - 6 - camera.getY(), 14, 3);
+        }
     }
-
-
-
-
 
     private void checkDst() {
         if(velX < 0)

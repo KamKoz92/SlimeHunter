@@ -16,8 +16,8 @@ public class Camera {
     }
 
     public void tick() {
-        x = handler.objects.get(0).x - Game.WIDTH/2;
-        y = handler.objects.get(0).y - Game.HEIGHT/2;
+        x = handler.player.x - Game.WIDTH/2;
+        y = handler.player.y - Game.HEIGHT/2;
         if(x < 0) x = 0;
         if(y < 0) y = 0;
         if(x > (mapWidth * tileSize) - w) x = (mapWidth * tileSize) - w;

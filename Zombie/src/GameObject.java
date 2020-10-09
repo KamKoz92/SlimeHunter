@@ -7,12 +7,16 @@ public abstract class GameObject {
     protected int objectSize;
     protected Handler handler;
     protected boolean solid;
-    public GameObject(int x, int y, Level level, Handler handler, boolean solid) {
+    protected double maxHealth;
+    protected double currentHealth;
+    public GameObject(int x, int y, Level level, Handler handler, boolean solid, double health) {
         this.x = x;
         this.y = y;
         this.level = level;
         this.handler = handler;
         this.solid = solid;
+        this.maxHealth = health;
+        this.currentHealth = health;
     }
 
     public abstract void tick();
@@ -77,11 +81,24 @@ public abstract class GameObject {
         int yMin = this.y + velY;
         int yMax = this.y + objectSize + velY - 1;
 
+        //collsion with tiles
         if(level.getTile(xMin, yMin).isSolid() || level.getTile(xMin, yMax).isSolid() || level.getTile(xMax, yMin).isSolid() || level.getTile(xMax, yMax).isSolid()) {
             // System.out.println("hit");
             return true;
         }
 
+        //collsion with player
+        if(this != handler.player) {
+            if(handler.player.inCollisionBox(xMin, yMin) || 
+                handler.player.inCollisionBox(xMin, yMax) ||
+                handler.player.inCollisionBox(xMax, yMin) ||
+                handler.player.inCollisionBox(xMax, yMax)) {
+                    // System.out.println("hit");
+                    return true;
+                }
+        }
+
+        //collision with objects
         GameObject tempO;
         for(int i = 0; i < handler.objects.size(); i++) {
             tempO = handler.objects.get(i);
@@ -98,8 +115,10 @@ public abstract class GameObject {
                 }
             } 
         }
+
         return false;
     }
+
 
     public boolean inCollisionBox(int x, int y) {
         if((this.x <= x && x < this.x + this.objectSize) && (this.y <= y && y < this.y + this.objectSize)) {
@@ -143,4 +162,13 @@ public abstract class GameObject {
     public boolean isSolid() {
         return solid;
     }
+
+	public void gotHit(int i) {
+        if(this.currentHealth < i) {
+            this.currentHealth = 0;
+        }
+        else {
+            this.currentHealth -= i;
+        }
+	}
 }

@@ -6,7 +6,7 @@ public class Bullet extends GameObject {
     private Handler handler;
     private int count;
     public Bullet(int x, int y, int angle, Handler handler, Level level, boolean solid) {
-        super(x, y, level, handler, solid);
+        super(x, y, level, handler, solid, 100);
         this.x = x;
         this.y = y;
         velX = (int) ((bulletVel) * Math.cos(angle));
