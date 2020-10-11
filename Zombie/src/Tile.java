@@ -1,4 +1,4 @@
-import java.awt.Graphics;
+
 import java.awt.image.BufferedImage;
 
 public class Tile {
@@ -7,6 +7,7 @@ public class Tile {
     public int sX, sY;
     private boolean solid;
     public BufferedImage image;
+    public int gCost, hCost;
     public Tile(int x, int y, int type, SpriteSheet sheet) {
         this.x = x;
         this.y = y;
@@ -16,14 +17,12 @@ public class Tile {
         this.sY = (type / 8) * 32;
         this.image = sheet.image.getSubimage(sX, sY, 32, 32);
     }
-    public void tick() {
-
+    public int fCost() {
+        return gCost + hCost;
     }
 
 
-    public void render(Graphics g) {
-        
-    }
+
 
     public int getX() {
         return x;

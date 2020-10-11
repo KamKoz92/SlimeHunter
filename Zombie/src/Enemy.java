@@ -6,15 +6,15 @@ public class Enemy extends GameObject {
 
     private Camera camera;
     private Random r;
-    private int spawnX, spawnY;
+    // private int spawnX, spawnY;
 
-    private int dstX, dstY;
-    private double diffX, diffY;
-    private double distance;
-    private int moveDelay;
-    private long lastMoveTime;
-    private boolean timeCheck;
-    private boolean dead;
+    // private int dstX, dstY;
+    // private double diffX, diffY;
+    // private double distance;
+    // private int moveDelay;
+    // private long lastMoveTime;
+    // private boolean timeCheck;
+    public boolean dead;
     public Enemy(int x, int y, Camera camera, Level level, Handler handler, boolean solid)  {
        super(x, y, level, handler, solid, 100);
         this.camera = camera;
@@ -25,18 +25,29 @@ public class Enemy extends GameObject {
        
     //    this.spawnX = x;
     //    this.spawnY = y;
-    //    this.r = new Random();
+       this.r = new Random();
     //    this.moveDelay = 1000;
     //    this.timeCheck = true;
     //    newDst();
     }
 
     public void tick() {
-        if(currentHealth <= 0) {
-            dead = true;
-            x = -100;
-            y = -100;
+        if(!dead) {
+            if(currentHealth <= 0) {
+                dead = true;
+                x = -100;
+                y = -100;
+            }
+            if(r.nextInt(10) < 2)
+            {
+                velX = r.nextInt(3)-1;
+                velY = r.nextInt(3)-1;
+                move(velX, velY);
+            }
         }
+        
+        
+
         // checkDst();
 
         // if(dstX < 0 || dstY < 0) { 
@@ -56,24 +67,24 @@ public class Enemy extends GameObject {
     }
     
 
-    private void newDst() {
-        this.dstX = spawnX + r.nextInt(200) - 100;
-        this.dstY = spawnY + r.nextInt(200) - 100;
-        this.diffX = this.x - this.dstX;
-        this.diffY = this.y - this.dstY;
-        distance = (int) Math.sqrt(Math.pow(diffX,2) + Math.pow(diffY,2));
-        velX = (int) (((-1.0/distance) * diffX) * 2);
-        velY = (int) (((-1.0/distance) * diffY) * 2);
-        velX = clamp(velX,-2,2);
-        velY = clamp(velY,-2,2);
+    // private void newDst() {
+    //     this.dstX = spawnX + r.nextInt(200) - 100;
+    //     this.dstY = spawnY + r.nextInt(200) - 100;
+    //     this.diffX = this.x - this.dstX;
+    //     this.diffY = this.y - this.dstY;
+    //     distance = (int) Math.sqrt(Math.pow(diffX,2) + Math.pow(diffY,2));
+    //     velX = (int) (((-1.0/distance) * diffX) * 2);
+    //     velY = (int) (((-1.0/distance) * diffY) * 2);
+    //     velX = clamp(velX,-2,2);
+    //     velY = clamp(velY,-2,2);
 
-    }
+    // }
 
-    private int clamp(int vel, int i, int j) {
-        if(vel > j) return j;
-        else if(vel < i) return i;
-        else return vel;
-    }
+    // private int clamp(int vel, int i, int j) {
+    //     if(vel > j) return j;
+    //     else if(vel < i) return i;
+    //     else return vel;
+    // }
 
     @Override
     public void render(Graphics g) {
@@ -90,31 +101,31 @@ public class Enemy extends GameObject {
         }
     }
 
-    private void checkDst() {
-        if(velX < 0)
-        {
-            if(this.x <= dstX) {
-                velX = 0;
-                dstX = -1;
-            }
-        }
-        else if(velX > 0) {
-            if(this.x >= dstX) {
-                velX = 0;
-                dstX = -1;
-            } 
-        }
-        if(velY < 0) {
-            if(this.y <= dstY) {
-                velY = 0;
-                dstY = -1;
-            }
-        }
-        else if(velY > 0) {
-            if(this.y >= dstY) {
-                velY = 0;
-                dstY = -1;
-            } 
-        }
-    }
+    // private void checkDst() {
+    //     if(velX < 0)
+    //     {
+    //         if(this.x <= dstX) {
+    //             velX = 0;
+    //             dstX = -1;
+    //         }
+    //     }
+    //     else if(velX > 0) {
+    //         if(this.x >= dstX) {
+    //             velX = 0;
+    //             dstX = -1;
+    //         } 
+    //     }
+    //     if(velY < 0) {
+    //         if(this.y <= dstY) {
+    //             velY = 0;
+    //             dstY = -1;
+    //         }
+    //     }
+    //     else if(velY > 0) {
+    //         if(this.y >= dstY) {
+    //             velY = 0;
+    //             dstY = -1;
+    //         } 
+    //     }
+    // }
 }

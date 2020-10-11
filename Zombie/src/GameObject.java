@@ -23,55 +23,57 @@ public abstract class GameObject {
     public abstract void render(Graphics g);
 
     public void move(int velX, int velY) {
-        if (velX != 0 && velY != 0) {
-            move(velX, 0);
-            move(0, velY);
-            return;
-        }
-
-        if(velX > 0) {
-            if(!hasCollided(velX, 0)) {
-                x += velX;
+        if(this.x > 0 && this.x < level.getWidth() * 32 && this.y > 0 && this.y < level.getHeight() * 32) {
+            if (velX != 0 && velY != 0) {
+                move(velX, 0);
+                move(0, velY);
+                return;
             }
-            else if(!hasCollided(velX-1, 0)){
-                x += velX-1;
+    
+            if(velX > 0) {
+                if(!hasCollided(velX, 0)) {
+                    x += velX;
+                }
+                else if(!hasCollided(velX-1, 0)){
+                    x += velX-1;
+                }
+                else if(!hasCollided(velX-2, 0)) {
+                    x += velX-2;
+                }
             }
-            else if(!hasCollided(velX-2, 0)) {
-                x += velX-2;
+            else {
+                if(!hasCollided(velX, 0)) {
+                    x += velX;
+                }
+                else if(!hasCollided(velX+1, 0)){
+                    x += velX+1;
+                }
+                else if(!hasCollided(velX+2, 0)) {
+                    x += velX+2;
+                }
             }
-        }
-        else {
-            if(!hasCollided(velX, 0)) {
-                x += velX;
+    
+            if(velY > 0) {
+                if(!hasCollided(0, velY)) {
+                    y += velY;
+                }
+                else if(!hasCollided(0, velY-1)){
+                    y += velY-1;
+                }
+                else if(!hasCollided(0, velY-2)) {
+                    y += velY-2;
+                }
             }
-            else if(!hasCollided(velX+1, 0)){
-                x += velX+1;
-            }
-            else if(!hasCollided(velX+2, 0)) {
-                x += velX+2;
-            }
-        }
-
-        if(velY > 0) {
-            if(!hasCollided(0, velY)) {
-                y += velY;
-            }
-            else if(!hasCollided(0, velY-1)){
-                y += velY-1;
-            }
-            else if(!hasCollided(0, velY-2)) {
-                y += velY-2;
-            }
-        }
-        else {
-            if(!hasCollided(0, velY)) {
-                y += velY;
-            }
-            else if(!hasCollided(0, velY+1)){
-                y += velY+1;
-            }
-            else if(!hasCollided(0, velY+2)) {
-                y += velY+2;
+            else {
+                if(!hasCollided(0, velY)) {
+                    y += velY;
+                }
+                else if(!hasCollided(0, velY+1)){
+                    y += velY+1;
+                }
+                else if(!hasCollided(0, velY+2)) {
+                    y += velY+2;
+                }
             }
         }
     }

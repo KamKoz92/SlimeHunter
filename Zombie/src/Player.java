@@ -51,6 +51,12 @@ public class Player extends GameObject {
                 } else if (velX > 0) {
                     anim.setAnimation("walkr");
                     direction = "right";
+                } else {
+                    if(direction == "right") {
+                        anim.setAnimation("walkr");
+                    } else {
+                        anim.setAnimation("walkl");
+                    }
                 }
 
             } else {
@@ -80,15 +86,13 @@ public class Player extends GameObject {
             xMax = this.x + 31;
             yMin = this.y;
             yMax = this.y + 15;
-        } 
+        }
 
         GameObject tempO;
-        for(int i = 0; i < handler.objects.size(); i++) {
+        for (int i = 0; i < handler.objects.size(); i++) {
             tempO = handler.objects.get(i);
-            if(tempO.inCollisionBox(xMin, yMin) || 
-            tempO.inCollisionBox(xMin, yMax) ||
-            tempO.inCollisionBox(xMax, yMin) ||
-            tempO.inCollisionBox(xMax, yMax)) {
+            if (tempO.inCollisionBox(xMin, yMin) || tempO.inCollisionBox(xMin, yMax) || tempO.inCollisionBox(xMax, yMin)
+                    || tempO.inCollisionBox(xMax, yMax)) {
                 System.out.println("hit");
                 tempO.gotHit(25);
             }
@@ -98,13 +102,11 @@ public class Player extends GameObject {
     @Override
     public void render(Graphics g) {
 
-        if(direction == "left"){
+        if (direction == "left") {
             g.drawImage(anim.getFrame(), x - camera.getX() - 25, y - camera.getY() - 32, null);
-        }
-        else {
+        } else {
             g.drawImage(anim.getFrame(), x - camera.getX() - 23, y - camera.getY() - 32, null);
         }
-
 
         // g.setColor(Color.white);
         // g.drawRect(this.x - camera.getX(), this.y - camera.getY(), 0, 0);
@@ -120,7 +122,7 @@ public class Player extends GameObject {
         // g.drawRect(this.x + 16 - camera.getX(), this.y - camera.getY(), 0, 0);
         // g.drawRect(this.x + 31 - camera.getX(), this.y - camera.getY(), 0, 0);
         // g.drawRect(this.x + 16 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
-        // g.drawRect(this.x + 31 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);   
+        // g.drawRect(this.x + 31 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
     }
 
     private void moveDir() {

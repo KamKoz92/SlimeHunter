@@ -1,13 +1,8 @@
 import java.awt.Graphics;
-// import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-
-// import java.awt.Color;
-
 
 
 public class Level {
@@ -16,14 +11,18 @@ public class Level {
     private List<Tile> tileMap = new ArrayList<Tile>();
     private int tileSize;
     private int width, height;
-    
-    public Level(String path, SpriteSheet sheet, Camera camera) {
+    private List<Spawner> spawners = new ArrayList<Spawner>();
+    public Level(String path, SpriteSheet sheet, Camera camera, Handler handler) {
         this.camera = camera;
         this.tileSize = 32;
         try {
             File file = new File(path);
             Scanner sc = new Scanner(file); 
             int y = 0;
+            str = sc.nextLine().split(",");
+            for(int i = 0; i < str.length; i++) {
+                spawners.add(new Spawner(Integer.parseInt(str[i]), handler, this, camera));
+            }
             while(sc.hasNextLine()) {
                 str = sc.nextLine().split(",");
                 for(int x = 0; x < str.length; x++) {
@@ -43,7 +42,9 @@ public class Level {
         } 
     }
     public void tick() {
-
+        for(int i = 0; i < spawners.size(); i++) {
+            spawners.get(i).tick();
+        }
     }
 
     public void render(Graphics g) {
@@ -53,6 +54,12 @@ public class Level {
             if(!outOfCamera(tempTile)) {
                 g.drawImage(tempTile.image, tempTile.getX() - camera.getX(), tempTile.getY() - camera.getY(), null);
             }
+        }
+        for(int i = 0; i < spawners.size(); i++) {
+            int x = (spawners.get(i).getTileNumber() % (width/tileSize)) * tileSize;
+            int y = (spawners.get(i).getTileNumber() / (width/tileSize)) * tileSize;
+            g.drawRect(x - camera.getX(), y - camera.getY(), 32, 32);
+            
         }
     }
 
@@ -74,6 +81,22 @@ public class Level {
             y = (y / tileSize) * (width / tileSize); 
             return tileMap.get(x + y);
         }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }
 

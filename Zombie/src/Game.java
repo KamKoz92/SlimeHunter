@@ -1,5 +1,4 @@
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -33,11 +32,10 @@ public class Game extends Canvas implements Runnable {
         camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
         hud = new HUD(handler);
         sheet = new SpriteSheet("res/level1tileset.png");
-        level = new Level("res/level1.txt", sheet, camera);
-        handler.newPlayer(new Player(64, 64,input, camera, level, handler, true, "res/player2.png"));
+        level = new Level("res/level1.txt", sheet, camera, handler);
+        handler.newPlayer(new Player(32, 32,input, camera, level, handler, true, "res/player2.png"));
         minput = new MouseInput(handler, camera, level);
         
-        handler.addObject(new Enemy(64 + 100, 64 + 150, camera, level, handler, true));
         this.addKeyListener(input);
         this.addMouseListener(minput);
 
@@ -96,6 +94,7 @@ public class Game extends Canvas implements Runnable {
     private void tick() {
         handler.tick();
         camera.tick();
+        level.tick();
     }
 
     private void render() {
