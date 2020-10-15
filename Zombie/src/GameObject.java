@@ -9,6 +9,8 @@ public abstract class GameObject {
     protected boolean solid;
     protected double maxHealth;
     protected double currentHealth;
+    protected int path;
+    protected Pathfinder pathfinder;
     public GameObject(int x, int y, Level level, Handler handler, boolean solid, double health) {
         this.x = x;
         this.y = y;

@@ -7,6 +7,10 @@ public class Handler {
 
     public List<GameObject> objects = Collections.synchronizedList(new LinkedList<GameObject>());
     public Player player;
+    public int score;
+    public Handler() {
+        score = 0;
+    }
 
     public void tick() {
         for(int i = 0; i < objects.size(); i++) {

@@ -13,7 +13,7 @@ public class HUD {
 
 
     public void tick() {
-
+        score = handler.score;
     }
 
     public void render(Graphics g) {
@@ -26,13 +26,4 @@ public class HUD {
         g.drawRect(8, 8, 150, 12);
         g.drawString("Score: " + score, 8, 36);
     }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
 }

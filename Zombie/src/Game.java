@@ -36,6 +36,8 @@ public class Game extends Canvas implements Runnable {
         handler.newPlayer(new Player(32, 32,input, camera, level, handler, true, "res/player2.png"));
         minput = new MouseInput(handler, camera, level);
         
+
+        // handler.addObject(new Enemy(250, 128, camera,level,handler,true));
         this.addKeyListener(input);
         this.addMouseListener(minput);
 
@@ -95,6 +97,7 @@ public class Game extends Canvas implements Runnable {
         handler.tick();
         camera.tick();
         level.tick();
+        hud.tick();
     }
 
     private void render() {

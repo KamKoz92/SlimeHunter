@@ -1,13 +1,17 @@
 
 import java.awt.image.BufferedImage;
 
-public class Tile {
+public class Tile {//extends IHeapItem<Tile>{
 
     private int x, y, type;
-    public int sX, sY;
+    private int sX, sY;
     private boolean solid;
     public BufferedImage image;
+
     public int gCost, hCost;
+    public Tile pathParent;
+    // public int heapIndex;
+
     public Tile(int x, int y, int type, SpriteSheet sheet) {
         this.x = x;
         this.y = y;
@@ -17,11 +21,20 @@ public class Tile {
         this.sY = (type / 8) * 32;
         this.image = sheet.image.getSubimage(sX, sY, 32, 32);
     }
+
+    // @Override
+    // public int compareTo(Tile tileToCompare) {
+    //     Integer compare = fCost().compareTo(tileToCompare.fCost());
+    //     if(compare == 0) {
+    //         compare = hCost.compareTo(tileToCompare.hCost);
+    //     }
+    //     return -compare;
+    // }
+
+
     public int fCost() {
         return gCost + hCost;
     }
-
-
 
 
     public int getX() {
@@ -55,7 +68,5 @@ public class Tile {
     public void setSolid(boolean solid) {
         this.solid = solid;
     }
-
-
 }
     
