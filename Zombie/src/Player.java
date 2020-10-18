@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class Player extends GameObject {
@@ -7,7 +8,7 @@ public class Player extends GameObject {
     private long attackTime;
     private Camera camera;
     private int speed;
-    private boolean attack;
+    private boolean activeAttack;
     private Animation anim;
     private String direction;
 
@@ -18,28 +19,27 @@ public class Player extends GameObject {
         this.camera = camera;
         this.objectSize = 16;
         speed = 2;
-        anim = new Animation(path, input);
+        anim = new Animation(path, "player");
         attackTime = 0;
-        attack = false;
+        activeAttack = false;
         direction = "right";
     }
 
     @Override
     public void tick() {
 
-        if (input.space && !attack) {
-            attack = true;
+        if (input.space && !activeAttack) {
+            activeAttack = true;
             checkAtkArea();
             if (direction == "left") {
                 anim.setAnimation("attackl");
             } else if (direction == "right") {
                 anim.setAnimation("attackr");
             }
-
             attackTime = System.currentTimeMillis();
-        } else if (attack) {
-            if (System.currentTimeMillis() - attackTime > 300) {
-                attack = false;
+        } else if (activeAttack) {
+            if (System.currentTimeMillis() - attackTime > (anim.getFrames() * 100)) {
+                activeAttack = false;
             }
         } else {
             moveDir();
@@ -67,6 +67,7 @@ public class Player extends GameObject {
                 }
             }
         }
+        anim.iterateFrame(input.space);
     }
 
     private void checkAtkArea() {
@@ -101,28 +102,11 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g) {
-
         if (direction == "left") {
             g.drawImage(anim.getFrame(), x - camera.getX() - 25, y - camera.getY() - 32, null);
         } else {
             g.drawImage(anim.getFrame(), x - camera.getX() - 23, y - camera.getY() - 32, null);
         }
-
-        // g.setColor(Color.white);
-        // g.drawRect(this.x - camera.getX(), this.y - camera.getY(), 0, 0);
-        // g.drawRect(this.x + 15 - camera.getX(), this.y - camera.getY(), 0, 0);
-        // g.drawRect(this.x, this.y + 15 - camera.getY(), 0, 0);
-        // g.drawRect(this.x + 15 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
-
-        // g.drawRect(this.x - 1 - camera.getX(), this.y - camera.getY(), 0, 0);
-        // g.drawRect(this.x - 16 - camera.getX(), this.y - camera.getY(), 0, 0);
-        // g.drawRect(this.x - 1 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
-        // g.drawRect(this.x - 16 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
-
-        // g.drawRect(this.x + 16 - camera.getX(), this.y - camera.getY(), 0, 0);
-        // g.drawRect(this.x + 31 - camera.getX(), this.y - camera.getY(), 0, 0);
-        // g.drawRect(this.x + 16 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
-        // g.drawRect(this.x + 31 - camera.getX(), this.y + 15 - camera.getY(), 0, 0);
     }
 
     private void moveDir() {
@@ -143,20 +127,3 @@ public class Player extends GameObject {
         }
     }
 }
-
-// g.drawImage(scaledImage.getSubimage(0, 0, 124, 124), x - camera.getX(), y -
-// camera.getY(), null);
-// scale = 2;
-// int new_w = image.getWidth() * scale;
-// int new_h = image.getHeight() * scale;
-// Image newImg = image.getScaledInstance(new_w, new_h, Image.SCALE_FAST);
-// scaledImage = new BufferedImage(new_w, new_h, BufferedImage.TYPE_INT_ARGB);
-// Graphics2D bGr = scaledImage.createGraphics();
-// bGr.drawImage(newImg, 0, 0, null);
-// bGr.dispose();
-// 1-5
-// 6-13
-// 14-19
-// 20-23
-// 24-26
-// 27-28

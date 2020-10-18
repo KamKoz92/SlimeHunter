@@ -10,9 +10,9 @@ public class Camera {
         this.w = w;
         this.h = h;
         this.handler = handler;
-        this.mapWidth = 32;//
-        this.mapHeight = 32;//
-        this.tileSize = 32;//
+        this.mapWidth = 32;
+        this.mapHeight = 32;
+        this.tileSize = 32;
     }
 
     public void tick() {

@@ -55,16 +55,13 @@ public class Level {
                 g.drawImage(tempTile.image, tempTile.getX() - camera.getX(), tempTile.getY() - camera.getY(), null);
             }
         }
-        for(int i = 0; i < spawners.size(); i++) {
-            int x = (spawners.get(i).getTileNumber() % (width/tileSize)) * tileSize;
-            int y = (spawners.get(i).getTileNumber() / (width/tileSize)) * tileSize;
-            g.drawRect(x - camera.getX(), y - camera.getY(), 32, 32);
-            
-        }
     }
 
     public boolean outOfCamera(Tile tile) {
-        if(tile.getX() + tileSize < camera.getX() || tile.getY() + tileSize < camera.getY() || tile.getX() > camera.getX() + camera.getW() || tile.getY() > camera.getY() + camera.getH()) {
+        if(tile.getX() + tileSize < camera.getX() || 
+        tile.getY() + tileSize < camera.getY() || 
+        tile.getX() > camera.getX() + camera.getW() || 
+        tile.getY() > camera.getY() + camera.getH()) {
             return true;
         }
         return false;
@@ -98,6 +95,9 @@ public class Level {
     public void setHeight(int height) {
         this.height = height;
     }
+	public int tileSize() {
+		return tileSize;
+	}
 }
 
 

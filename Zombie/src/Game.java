@@ -33,11 +33,11 @@ public class Game extends Canvas implements Runnable {
         hud = new HUD(handler);
         sheet = new SpriteSheet("res/level1tileset.png");
         level = new Level("res/level1.txt", sheet, camera, handler);
-        handler.newPlayer(new Player(32, 32,input, camera, level, handler, true, "res/player2.png"));
+        handler.newPlayer(new Player(32, 32, input, camera, level, handler, true, "res/player2.png"));
         minput = new MouseInput(handler, camera, level);
         
 
-        // handler.addObject(new Enemy(250, 128, camera,level,handler,true));
+        // handler.addObject(new Enemy(250, 128, camera, level, handler, true, "res/slime.png"));
         this.addKeyListener(input);
         this.addMouseListener(minput);
 

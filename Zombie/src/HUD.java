@@ -11,7 +11,6 @@ public class HUD {
         this.handler = handler;
     }
 
-
     public void tick() {
         score = handler.score;
     }

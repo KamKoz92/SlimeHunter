@@ -87,7 +87,6 @@ public abstract class GameObject {
 
         //collsion with tiles
         if(level.getTile(xMin, yMin).isSolid() || level.getTile(xMin, yMax).isSolid() || level.getTile(xMax, yMin).isSolid() || level.getTile(xMax, yMax).isSolid()) {
-            // System.out.println("hit");
             return true;
         }
 
@@ -97,7 +96,6 @@ public abstract class GameObject {
                 handler.player.inCollisionBox(xMin, yMax) ||
                 handler.player.inCollisionBox(xMax, yMin) ||
                 handler.player.inCollisionBox(xMax, yMax)) {
-                    // System.out.println("hit");
                     return true;
                 }
         }
@@ -114,18 +112,17 @@ public abstract class GameObject {
                 tempO.inCollisionBox(xMin, yMax) ||
                 tempO.inCollisionBox(xMax, yMin) ||
                 tempO.inCollisionBox(xMax, yMax)) {
-                    // System.out.println("hit");
                     return true;
                 }
             } 
         }
-
         return false;
     }
 
 
     public boolean inCollisionBox(int x, int y) {
-        if((this.x <= x && x < this.x + this.objectSize) && (this.y <= y && y < this.y + this.objectSize)) {
+        if((this.x <= x && x < this.x + this.objectSize) && 
+           (this.y <= y && y < this.y + this.objectSize)) {
             return true;
         }
         return false;
