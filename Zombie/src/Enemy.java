@@ -44,7 +44,6 @@ public class Enemy extends GameObject {
                 anim.iterateFrame(triggerAttack);
                 if (triggerAttack && !activeAttack) {
                     activeAttack = true;
-                    System.out.println("slim attack ");
                     triggerAttack = false;
                     if (direction == "left") {
                         anim.setAnimation("attackl");
@@ -163,27 +162,23 @@ public class Enemy extends GameObject {
         handler.player.inCollisionBox(xMax + 1, yMin) ||
         handler.player.inCollisionBox(xMax + 1, yMax)) {
             //check for 1 pixel right x+1
-            System.out.println("PlayerinRange on right");
         } else if(handler.player.inCollisionBox(xMin - 1, yMin) ||
         handler.player.inCollisionBox(xMin - 1, yMax) ||
         handler.player.inCollisionBox(xMax - 1, yMin) ||
         handler.player.inCollisionBox(xMax - 1, yMax)) {
             //check for 1 pixel for left x-1
-            System.out.println("PlayerinRange on left");
             return true;
         } else if(handler.player.inCollisionBox(xMin, yMin + 1) ||
         handler.player.inCollisionBox(xMin, yMax + 1) ||
         handler.player.inCollisionBox(xMax, yMin + 1) ||
         handler.player.inCollisionBox(xMax, yMax + 1)) {
             //check for 1 pixel for up y+1
-            System.out.println("PlayerinRange on up");
             return true;
         } else if(handler.player.inCollisionBox(xMin, yMin - 1) ||
         handler.player.inCollisionBox(xMin, yMax - 1) ||
         handler.player.inCollisionBox(xMax, yMin - 1) ||
         handler.player.inCollisionBox(xMax, yMax - 1)){
             //check for 1 pixel for down y-1
-            System.out.println("PlayerinRange on down");
             return true;
         }
 

@@ -1,5 +1,4 @@
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 public class Player extends GameObject {
@@ -94,7 +93,6 @@ public class Player extends GameObject {
             tempO = handler.objects.get(i);
             if (tempO.inCollisionBox(xMin, yMin) || tempO.inCollisionBox(xMin, yMax) || tempO.inCollisionBox(xMax, yMin)
                     || tempO.inCollisionBox(xMax, yMax)) {
-                System.out.println("hit");
                 tempO.gotHit(25);
             }
         }
