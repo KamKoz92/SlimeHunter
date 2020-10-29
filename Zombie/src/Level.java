@@ -97,7 +97,13 @@ public class Level {
     }
 	public int tileSize() {
 		return tileSize;
-	}
+    }
+
+    public void newGame() {
+        for(int i = 0; i < spawners.size(); i++) {
+            spawners.get(i).newGameSpawn();
+        }
+    }
 }
 
 

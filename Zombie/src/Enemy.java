@@ -55,7 +55,7 @@ public class Enemy extends GameObject {
                     if(System.currentTimeMillis() - attackTime > (anim.getFrames() * 100)) {
                         activeAttack = false;
                         if(playerInRange()){
-                            handler.player.gotHit(5);
+                            handler.player.gotHit(105);
                         }
                         
                     }
@@ -207,5 +207,10 @@ public class Enemy extends GameObject {
             //     }
             // }
         }
+    }
+    @Override
+    public void stopSounds() {
+        
+
     }
 }

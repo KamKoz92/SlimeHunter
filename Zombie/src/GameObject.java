@@ -23,6 +23,7 @@ public abstract class GameObject {
 
     public abstract void tick();
     public abstract void render(Graphics g);
+    public abstract void stopSounds();
 
     public void move(int velX, int velY) {
         if(this.x > 0 && this.x < level.getWidth() * 32 && this.y > 0 && this.y < level.getHeight() * 32) {

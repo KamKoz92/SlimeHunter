@@ -44,6 +44,15 @@ public class Spawner {
             }
         }
     }
+    public void newGameSpawn() {
+        for(int i = 0; i < mobs.size(); i++) {
+            Enemy tempEnemy = mobs.get(i);
+            tempEnemy.currentHealth = tempEnemy.maxHealth;
+            tempEnemy.dead = false;
+            tempEnemy.x = this.x;
+            tempEnemy.y = this.y;
+        }
+    }
 
     public int getTileNumber() {
         return tileNumber;

@@ -1,6 +1,8 @@
 
 import java.awt.Graphics;
 
+
+
 public class Player extends GameObject {
 
     private KeyInput input;
@@ -10,6 +12,10 @@ public class Player extends GameObject {
     private boolean activeAttack;
     private Animation anim;
     private String direction;
+    private Sound walkSound;
+    private Sound attackSwing;
+
+    public float volume = 0.1f;
 
     public Player(int x, int y, KeyInput input, Camera camera, Level level, Handler handler, boolean solid,
             String path) {
@@ -19,6 +25,8 @@ public class Player extends GameObject {
         this.objectSize = 16;
         speed = 2;
         anim = new Animation(path, "player");
+        attackSwing = new Sound("res/swing3.wav", 0.1f);
+        walkSound = new Sound("res/interface2.wav", 0.05f);
         attackTime = 0;
         activeAttack = false;
         direction = "right";
@@ -26,9 +34,10 @@ public class Player extends GameObject {
 
     @Override
     public void tick() {
-
         if (input.space && !activeAttack) {
+            walkSound.stop();
             activeAttack = true;
+            attackSwing.play();
             checkAtkArea();
             if (direction == "left") {
                 anim.setAnimation("attackl");
@@ -39,10 +48,12 @@ public class Player extends GameObject {
         } else if (activeAttack) {
             if (System.currentTimeMillis() - attackTime > (anim.getFrames() * 100)) {
                 activeAttack = false;
+                attackSwing.stop();
             }
         } else {
             moveDir();
             if (velX != 0 || velY != 0) {
+                walkSound.playInLoop();
                 move(velX, velY);
                 if (velX < 0) {
                     anim.setAnimation("walkl");
@@ -57,8 +68,8 @@ public class Player extends GameObject {
                         anim.setAnimation("walkl");
                     }
                 }
-
             } else {
+                walkSound.stop();
                 if (direction == "left") {
                     anim.setAnimation("idlel");
                 } else if (direction == "right") {
@@ -67,6 +78,12 @@ public class Player extends GameObject {
             }
         }
         anim.iterateFrame(input.space);
+    }
+
+    @Override
+    public void stopSounds() {
+        attackSwing.stop();
+        walkSound.stop();
     }
 
     private void checkAtkArea() {

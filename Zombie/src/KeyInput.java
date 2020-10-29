@@ -9,6 +9,9 @@ public class KeyInput extends KeyAdapter {
     public int verticalMov = 0;
     public int horizontalMov = 0;
     public boolean space = false;
+    private boolean pauseKey = false;
+
+
     public void keyPressed(KeyEvent e) {
         key = e.getKeyCode();
         if(key == KeyEvent.VK_D) {
@@ -29,6 +32,9 @@ public class KeyInput extends KeyAdapter {
         }
         else if(key == KeyEvent.VK_SPACE) {
             space = true;
+        }
+        else if(key == KeyEvent.VK_P) {
+            pauseKey = !pauseKey;
         }
         
     }
@@ -74,6 +80,10 @@ public class KeyInput extends KeyAdapter {
             space = false;
         }
 
+    }
+
+    public boolean isPauseKey() {
+        return pauseKey;
     }
     
 }
