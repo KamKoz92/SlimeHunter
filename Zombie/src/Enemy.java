@@ -16,6 +16,7 @@ public class Enemy extends GameObject {
     private boolean triggerAttack;
     private boolean activeAttack;
     private long attackTime;
+    private Sound attackSound;
     public Enemy(int x, int y, Camera camera, Level level, Handler handler, boolean solid, String path) {
         super(x, y, level, handler, solid, 100);
         spawnX = x;
@@ -25,6 +26,7 @@ public class Enemy extends GameObject {
         dead = false;
         anim = new Animation(path, "enemy");
         pathfinder = new Pathfinder(level);
+        attackSound = new Sound("res/slime8.wav", 0.1f);
         followPlayer = false;
         followRespawn = false;
         tickCount = 0;
@@ -39,10 +41,12 @@ public class Enemy extends GameObject {
                 x = -100;
                 y = -100;
                 handler.score += 100;
+                stopSounds();
             } else {
                 checkPlayerDist();
                 anim.iterateFrame(triggerAttack);
                 if (triggerAttack && !activeAttack) {
+                    attackSound.play();
                     activeAttack = true;
                     triggerAttack = false;
                     if (direction == "left") {
@@ -55,7 +59,7 @@ public class Enemy extends GameObject {
                     if(System.currentTimeMillis() - attackTime > (anim.getFrames() * 100)) {
                         activeAttack = false;
                         if(playerInRange()){
-                            handler.player.gotHit(105);
+                            handler.player.gotHit(25);
                         }
                         
                     }
@@ -91,6 +95,7 @@ public class Enemy extends GameObject {
                         }
                     }
                     if (velX != 0 || velY != 0) {
+                        attackSound.stop();
                         move(velX, velY);
                         if (velX < 0) {
                             anim.setAnimation("walkl");
@@ -107,6 +112,7 @@ public class Enemy extends GameObject {
                         }
         
                     } else {
+                        attackSound.stop();
                         if (direction == "left") {
                             anim.setAnimation("idlel");
                         } else if (direction == "right") {
@@ -210,7 +216,6 @@ public class Enemy extends GameObject {
     }
     @Override
     public void stopSounds() {
-        
-
+        attackSound.stop();
     }
 }

@@ -22,6 +22,7 @@ public class Game extends Canvas implements Runnable {
     private HUD hud;
     private Menu menu;
     private Fonts customFonts;
+    private Sound music;
     public static enum GAMESTATE {
         MENU,
         GAME, 
@@ -45,7 +46,7 @@ public class Game extends Canvas implements Runnable {
         sheet = new SpriteSheet("res/level1tileset.png");
         level = new Level("res/level1.txt", sheet, camera, handler);
         handler.newPlayer(new Player(32, 32, input, camera, level, handler, true, "res/player2.png"));
-        
+        music = new Sound("res/story time.wav", 0.5f);
         gameState = GAMESTATE.MENU;
         
         customFonts = new Fonts();
@@ -87,7 +88,7 @@ public class Game extends Canvas implements Runnable {
         int ticks = 0, frames = 0;
         long timer = System.currentTimeMillis();
         init();
-
+        music.playInLoop();
         while (isRunning) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -119,6 +120,7 @@ public class Game extends Canvas implements Runnable {
         {
             System.out.println(handler.endGame());
             gameState = GAMESTATE.MENU;
+            music.play();
             menu.menuType = 3;
         }
         if (gameState == GAMESTATE.GAME) {
@@ -177,6 +179,7 @@ public class Game extends Canvas implements Runnable {
     }
 
 	public void newGame() {
+        music.stop();
         handler.newGame();
         level.newGame();
 	}
