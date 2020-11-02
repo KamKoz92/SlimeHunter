@@ -1,25 +1,26 @@
 
 import java.awt.image.BufferedImage;
 
-public class Tile {//extends IHeapItem<Tile>{
+public class Tile { //extends IHeapItem<Tile>{
 
-    private int x, y, type;
-    private int sX, sY;
-    private boolean solid;
-    public BufferedImage image;
+    private int x, y;
+    private int sheetX, sheetY;
+    private boolean isSolid;
+    public int tileType;
+    public BufferedImage tileImage;
 
     public int gCost, hCost;
     public Tile pathParent;
     // public int heapIndex;
 
-    public Tile(int x, int y, int type, SpriteSheet sheet) {
+    public Tile(int x, int y, int tileType, SpriteSheet sheet) {
         this.x = x;
         this.y = y;
-        this.type = type;
-        this.solid = Tileset.solid(type);
-        this.sX = (type % 8) * 32;
-        this.sY = (type / 8) * 32;
-        this.image = sheet.image.getSubimage(sX, sY, 32, 32);
+        this.tileType = tileType;
+        this.isSolid = Tileset.solidOrNot(tileType);
+        this.sheetX = (tileType % 8) * 32;
+        this.sheetY = (tileType / 8) * 32;
+        this.tileImage = sheet.image.getSubimage(sheetX, sheetY, 32, 32);
     }
 
     // @Override
@@ -36,37 +37,20 @@ public class Tile {//extends IHeapItem<Tile>{
         return gCost + hCost;
     }
 
-
     public int getX() {
         return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
     }
 
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+        return tileType;
     }
 
     public boolean isSolid() {
-        return solid;
-    }
-
-    public void setSolid(boolean solid) {
-        this.solid = solid;
+        return isSolid;
     }
 }
     

@@ -1,22 +1,24 @@
 import java.awt.Graphics;
 
 public abstract class GameObject {
+
     protected int x, y;
-    protected int velX, velY;
+    protected int velocityX, velocityY;
     protected Level level;
     protected int objectSize;
     protected Handler handler;
-    protected boolean solid;
+    protected boolean isSolid;
     protected double maxHealth;
     protected double currentHealth;
     protected int path;
     protected Pathfinder pathfinder;
-    public GameObject(int x, int y, Level level, Handler handler, boolean solid, double health) {
+    
+    public GameObject(int x, int y, Level level, Handler handler, boolean isSolid, double health) {
         this.x = x;
         this.y = y;
         this.level = level;
         this.handler = handler;
-        this.solid = solid;
+        this.isSolid = isSolid;
         this.maxHealth = health;
         this.currentHealth = health;
     }
@@ -25,66 +27,56 @@ public abstract class GameObject {
     public abstract void render(Graphics g);
     public abstract void stopSounds();
 
-    public void move(int velX, int velY) {
+    public void moveObject(int velocityX, int velocityY) {
         if(this.x > 0 && this.x < level.getWidth() * 32 && this.y > 0 && this.y < level.getHeight() * 32) {
-            if (velX != 0 && velY != 0) {
-                move(velX, 0);
-                move(0, velY);
+            if (velocityX != 0 && velocityY != 0) {
+                moveObject(velocityX, 0);
+                moveObject(0, velocityY);
                 return;
             }
-    
-            if(velX > 0) {
-                if(!hasCollided(velX, 0)) {
-                    x += velX;
+
+            if (velocityX > 0) {
+                if (!hasCollided(velocityX, 0)) {
+                    x += velocityX;
+                } else if (!hasCollided(velocityX - 1, 0)) {
+                    x += velocityX - 1;
+                } else if (!hasCollided(velocityX - 2, 0)) {
+                    x += velocityX - 2;
                 }
-                else if(!hasCollided(velX-1, 0)){
-                    x += velX-1;
-                }
-                else if(!hasCollided(velX-2, 0)) {
-                    x += velX-2;
-                }
-            }
-            else {
-                if(!hasCollided(velX, 0)) {
-                    x += velX;
-                }
-                else if(!hasCollided(velX+1, 0)){
-                    x += velX+1;
-                }
-                else if(!hasCollided(velX+2, 0)) {
-                    x += velX+2;
+            } else {
+                if (!hasCollided(velocityX, 0)) {
+                    x += velocityX;
+                } else if (!hasCollided(velocityX + 1, 0)) {
+                    x += velocityX + 1;
+                } else if (!hasCollided(velocityX + 2, 0)) {
+                    x += velocityX + 2;
                 }
             }
-    
-            if(velY > 0) {
-                if(!hasCollided(0, velY)) {
-                    y += velY;
+
+            if (velocityY > 0) {
+                if (!hasCollided(0, velocityY)) {
+                    y += velocityY;
+                } else if (!hasCollided(0, velocityY - 1)) {
+                    y += velocityY - 1;
+                } else if (!hasCollided(0, velocityY - 2)) {
+                    y += velocityY - 2;
                 }
-                else if(!hasCollided(0, velY-1)){
-                    y += velY-1;
-                }
-                else if(!hasCollided(0, velY-2)) {
-                    y += velY-2;
-                }
-            }
-            else {
-                if(!hasCollided(0, velY)) {
-                    y += velY;
-                }
-                else if(!hasCollided(0, velY+1)){
-                    y += velY+1;
-                }
-                else if(!hasCollided(0, velY+2)) {
-                    y += velY+2;
+            } else {
+                if (!hasCollided(0, velocityY)) {
+                    y += velocityY;
+                } else if (!hasCollided(0, velocityY + 1)) {
+                    y += velocityY + 1;
+                } else if (!hasCollided(0, velocityY + 2)) {
+                    y += velocityY + 2;
                 }
             }
         }
     }
-    public boolean hasCollided(int velX, int velY) {
-        int xMin = this.x + velX;
-        int xMax = this.x + objectSize + velX - 1;
-        int yMin = this.y + velY;
-        int yMax = this.y + objectSize + velY - 1;
+    public boolean hasCollided(int velocityX, int velocityY) {
+        int xMin = this.x + velocityX;
+        int xMax = this.x + objectSize + velocityX - 1;
+        int yMin = this.y + velocityY;
+        int yMax = this.y + objectSize + velocityY - 1;
 
         //collsion with tiles
         if(level.getTile(xMin, yMin).isSolid() || level.getTile(xMin, yMax).isSolid() || level.getTile(xMax, yMin).isSolid() || level.getTile(xMax, yMax).isSolid()) {
@@ -93,26 +85,22 @@ public abstract class GameObject {
 
         //collsion with player
         if(this != handler.player) {
-            if(handler.player.inCollisionBox(xMin, yMin) || 
-                handler.player.inCollisionBox(xMin, yMax) ||
-                handler.player.inCollisionBox(xMax, yMin) ||
-                handler.player.inCollisionBox(xMax, yMax)) {
-                    return true;
-                }
+            if(handler.player.inCollisionBox(xMin, yMin) || handler.player.inCollisionBox(xMin, yMax) ||
+            handler.player.inCollisionBox(xMax, yMin) || handler.player.inCollisionBox(xMax, yMax)) {
+                return true;
+            }
         }
 
         //collision with objects
-        GameObject tempO;
+        GameObject tempObject;
         for(int i = 0; i < handler.objects.size(); i++) {
-            tempO = handler.objects.get(i);
-            if(tempO.equals(this)) {
+            tempObject = handler.objects.get(i);
+            if(tempObject.equals(this)) {
                 continue;
             }
-            if(tempO.solid) {
-                if(tempO.inCollisionBox(xMin, yMin) || 
-                tempO.inCollisionBox(xMin, yMax) ||
-                tempO.inCollisionBox(xMax, yMin) ||
-                tempO.inCollisionBox(xMax, yMax)) {
+            if(tempObject.isSolid) {
+                if(tempObject.inCollisionBox(xMin, yMin) || tempObject.inCollisionBox(xMin, yMax) ||
+                tempObject.inCollisionBox(xMax, yMin) || tempObject.inCollisionBox(xMax, yMax)) {
                     return true;
                 }
             } 
@@ -120,10 +108,8 @@ public abstract class GameObject {
         return false;
     }
 
-
     public boolean inCollisionBox(int x, int y) {
-        if((this.x <= x && x < this.x + this.objectSize) && 
-           (this.y <= y && y < this.y + this.objectSize)) {
+        if((this.x <= x && x < this.x + this.objectSize) && (this.y <= y && y < this.y + this.objectSize)) {
             return true;
         }
         return false;
@@ -133,36 +119,12 @@ public abstract class GameObject {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getVelX() {
-        return velX;
-    }
-
-    public void setVelX(int velX) {
-        this.velX = velX;
-    }
-
-    public int getVelY() {
-        return velY;
-    }
-
-    public void setVelY(int velY) {
-        this.velY = velY;
-    }
-
     public boolean isSolid() {
-        return solid;
+        return isSolid;
     }
 
 	public void gotHit(int i) {

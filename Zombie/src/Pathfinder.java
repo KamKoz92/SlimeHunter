@@ -4,12 +4,10 @@ import java.util.List;
 
 public class Pathfinder {
 
-    List<Tile> openSet;
-    List<Tile> closedSet;
-    Level level;
-    List<Tile> path;
-    Tile startTile;
-    Tile targetTile;
+    private List<Tile> openSet;
+    private List<Tile> closedSet;
+    private Level level;
+    public List<Tile> path;
 
     public Pathfinder(Level level) {
         this.level = level;
@@ -18,29 +16,25 @@ public class Pathfinder {
         path = new ArrayList<Tile>();
     }
 
-    public void pathFinding(Tile _startTile, Tile _targetTile) {
+    public void findNewPath(Tile startTile, Tile targetTile) {
         openSet.clear();
         closedSet.clear();
         path.clear();
-        startTile = _startTile;
-        targetTile = _targetTile;
-
         openSet.add(startTile);
         while (openSet.size() > 0) {
-            ///////////////////////
             // Tile currentTile = openSet.removeFirst(); heap
 
             Tile currentTile = openSet.get(0);
-
-
             for (int i = 1; i < openSet.size(); i++) {
                 if (openSet.get(i).fCost() < currentTile.fCost()
                         || openSet.get(i).fCost() == currentTile.fCost() && openSet.get(i).hCost < currentTile.hCost) {
                     currentTile = openSet.get(i);
                 }
             }
+
             openSet.remove(currentTile);
             closedSet.add(currentTile);
+
             if (currentTile == targetTile) {
                 retracePath(startTile, targetTile);
                 return;
@@ -50,6 +44,7 @@ public class Pathfinder {
                 if (neighbour.isSolid() || closedSet.contains(neighbour)) {
                     continue;
                 }
+
                 int newMovementCostToNeighbour = currentTile.gCost + getDistance(currentTile, neighbour);
                 if (newMovementCostToNeighbour < neighbour.gCost || !openSet.contains(neighbour)) {
                     neighbour.gCost = newMovementCostToNeighbour;
@@ -60,27 +55,16 @@ public class Pathfinder {
                     }
                 }
             }
-
         }
     }
 
     private void retracePath(Tile startTile, Tile targetTile) {
-
         Tile currentTile = targetTile;
         while (currentTile != startTile) {
             path.add(currentTile);
             currentTile = currentTile.pathParent;
         }
         Collections.reverse(path);
-    }
-
-    private int getDistance(Tile A, Tile B) {
-        int dstX = Math.abs(A.getX() - B.getX());
-        int dstY = Math.abs(A.getY() - B.getY());
-        if (dstX > dstY) {
-            return 14 * dstY + 10 * (dstX - dstY);
-        }
-        return 14 * dstX + 10 * (dstY - dstX);
     }
 
     private List<Tile> getNeighbours(Tile tile) {
@@ -98,5 +82,14 @@ public class Pathfinder {
             }
         }
         return neighbours;
+    }
+
+    private int getDistance(Tile A, Tile B) {
+        int dstX = Math.abs(A.getX() - B.getX());
+        int dstY = Math.abs(A.getY() - B.getY());
+        if (dstX > dstY) {
+            return 14 * dstY + 10 * (dstX - dstY);
+        }
+        return 14 * dstX + 10 * (dstY - dstX);
     }
 }

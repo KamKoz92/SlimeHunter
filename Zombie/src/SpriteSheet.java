@@ -6,14 +6,16 @@ import java.io.IOException;
 
 public class SpriteSheet {
     BufferedImage image;
-    public SpriteSheet(String path) {
+    public SpriteSheet(String filePath) {
         image = null;
         try {
-            image = ImageIO.read(new File(path));
+            image = ImageIO.read(new File(filePath));
         } catch(IOException e) {
             e.printStackTrace();
         }
-        if(image == null) return;
 
+        if(image == null) {
+            System.out.println("nullpointer on sprite sheet");
+        }
     }
 }

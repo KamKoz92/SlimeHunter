@@ -14,8 +14,8 @@ public class Game extends Canvas implements Runnable {
     private boolean isRunning = false;
 
     private Handler handler;
-    private KeyInput input;
-    private MouseInput minput;
+    private KeyInput keyInput;
+    private MouseInput mouseInput;
     private Camera camera;
     private Level level;
     private SpriteSheet sheet;
@@ -31,30 +31,13 @@ public class Game extends Canvas implements Runnable {
         PAUSE,
     };
 
+    public static void main(String args[]) {
+        new Game();
+    }
+
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
         start();
-    }
-
-    private void init() {
-
-        handler = new Handler();
-        input = new KeyInput();
-        camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
-        
-        sheet = new SpriteSheet("res/level1tileset.png");
-        level = new Level("res/level1.txt", sheet, camera, handler);
-        handler.newPlayer(new Player(32, 32, input, camera, level, handler, true, "res/player2.png"));
-        music = new Sound("res/story time.wav", 0.5f);
-        gameState = GAMESTATE.MENU;
-        
-        customFonts = new Fonts();
-        hud = new HUD(handler, customFonts.font2_12);
-        menu = new Menu(handler, WIDTH, HEIGHT, customFonts);
-        minput = new MouseInput(handler, camera, level, this, menu);
-
-        this.addKeyListener(input);
-        this.addMouseListener(minput);
     }
 
     private synchronized void start() {
@@ -73,7 +56,6 @@ public class Game extends Canvas implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void run() {
@@ -109,6 +91,51 @@ public class Game extends Canvas implements Runnable {
         stop();
     }
 
+    private void init() {
+        handler = new Handler();
+        keyInput = new KeyInput();
+        camera = new Camera(0, 0, WIDTH, HEIGHT, handler);
+        sheet = new SpriteSheet("res/level1tileset.png");
+        level = new Level("res/level1.txt", sheet, camera, handler);
+        music = new Sound("res/story time.wav", 0.5f);
+        customFonts = new Fonts();
+        hud = new HUD(handler, customFonts.font_12);
+        menu = new Menu(handler, WIDTH, HEIGHT, customFonts);
+        mouseInput = new MouseInput(handler, camera, level, this, menu);
+
+        gameState = GAMESTATE.MENU;
+        handler.newPlayer(new Player(32, 32, keyInput, camera, level, handler, true, "res/player2.png"));
+
+        this.addKeyListener(keyInput);
+        this.addMouseListener(mouseInput);
+    }
+
+    private void render() {
+        BufferStrategy bs = this.getBufferStrategy();
+
+        if (bs == null) {
+            this.createBufferStrategy(3);
+            return;
+        }
+
+        Graphics g = bs.getDrawGraphics();
+
+        if(gameState == GAMESTATE.GAME) {
+            level.render(g);
+            handler.render(g);
+            hud.render(g);
+        } else if (gameState == GAMESTATE.MENU) {
+            menu.render(g);
+        } else {
+            g.setFont(customFonts.font_48);
+            g.setColor(Color.white);
+            g.drawString("Game Paused", 100, 100);
+        }
+        
+        bs.show();
+        g.dispose();
+    }
+
     private void tick() {
         if(handler.isEndGame())
         {
@@ -124,39 +151,9 @@ public class Game extends Canvas implements Runnable {
         } else if(gameState == GAMESTATE.MENU) {
             menu.tick();
         }
-
-        
     }
 
-    private void render() {
-        BufferStrategy bs = this.getBufferStrategy();
-        if (bs == null) {
-            this.createBufferStrategy(3);
-            return;
-        }
-        Graphics g = bs.getDrawGraphics();
-
-        if(gameState == GAMESTATE.GAME) {
-            level.render(g);
-            handler.render(g);
-            hud.render(g);
-        } else if (gameState == GAMESTATE.MENU) {
-            menu.render(g);
-        } else {
-            g.setFont(customFonts.font2_48);
-            g.setColor(Color.white);
-            g.drawString("Game Paused", 100, 100);
-        }
-        
-        bs.show();
-        g.dispose();
-    }
-
-    public static void main(String args[]) {
-        new Game();
-    }
-
-	public int currentGameState() {
+	public int getGameState() {
         if(gameState == GAMESTATE.MENU) {
             return 1;
         } else if(gameState == GAMESTATE.GAME) {

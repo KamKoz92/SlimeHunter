@@ -1,5 +1,5 @@
 public class Tileset {
-    static boolean solid(int i) {
+    static boolean solidOrNot(int i) {
         if(i < 12) {
             return false;
         }
