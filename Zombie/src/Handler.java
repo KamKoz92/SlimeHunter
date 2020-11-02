@@ -49,7 +49,7 @@ public class Handler {
         gameOver = false;
 	}
 
-	public boolean endGame() {
+	public boolean isEndGame() {
         if(player.currentHealth <= 0 && !gameOver) {
             gameOver = true;
             player.stopSounds();

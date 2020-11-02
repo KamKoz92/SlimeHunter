@@ -23,18 +23,17 @@ public class Game extends Canvas implements Runnable {
     private Menu menu;
     private Fonts customFonts;
     private Sound music;
+    public GAMESTATE gameState;
+
     public static enum GAMESTATE {
         MENU,
         GAME, 
         PAUSE,
     };
 
-    public GAMESTATE gameState;
-
     public Game() {
         new Window(WIDTH, HEIGHT, title, this);
         start();
-
     }
 
     private void init() {
@@ -54,10 +53,8 @@ public class Game extends Canvas implements Runnable {
         menu = new Menu(handler, WIDTH, HEIGHT, customFonts);
         minput = new MouseInput(handler, camera, level, this, menu);
 
-        // handler.addObject(new Enemy(250, 128, camera, level, handler, true, "res/slime.png"));
         this.addKeyListener(input);
         this.addMouseListener(minput);
-
     }
 
     private synchronized void start() {
@@ -87,8 +84,10 @@ public class Game extends Canvas implements Runnable {
         double delta = 0;
         int ticks = 0, frames = 0;
         long timer = System.currentTimeMillis();
+
         init();
         music.playInLoop();
+
         while (isRunning) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -111,14 +110,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        // if(input.isPauseKey()) {
-        //     gameState = GAMESTATE.PAUSE;
-        // } else {
-        //     gameState = GAMESTATE.GAME;
-        // }
-        if(handler.endGame())
+        if(handler.isEndGame())
         {
-            System.out.println(handler.endGame());
             gameState = GAMESTATE.MENU;
             music.play();
             menu.menuType = 3;
